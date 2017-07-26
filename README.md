@@ -21,5 +21,5 @@ In addition, a [sample app](https://github.com/padster/Muse-EEG-Toolkit/tree/mas
 ![Device List](https://raw.githubusercontent.com/padster/Muse-EEG-Toolkit/master/images/deviceList.png)
 Shows the list of devices found, current scanning status, and lets a user select a device.
 
-![Device Details](https://raw.githubusercontent.com/padster/Muse-EEG-Toolkit/master/images/deviceList.png)
+![Device Details](https://raw.githubusercontent.com/padster/Muse-EEG-Toolkit/master/images/deviceDetails.png)
 Shows the device connection status, the isGood for each sensor, and a scrolling graph of a raw channel as a SurfaceView and GLSurfaceView.
