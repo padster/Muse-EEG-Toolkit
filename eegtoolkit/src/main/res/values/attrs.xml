@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="GraphGLView">
+        <attr name="durationSec" format="integer" />
+    </declare-styleable>
+    <declare-styleable name="GraphSurfaceView">
+        <attr name="lineColor" format="string" />
+    </declare-styleable>
+</resources>
