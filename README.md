@@ -19,7 +19,20 @@ More are planned, both for values coming from the Muse (e.g. Frequency band time
 In addition, a [sample app](https://github.com/padster/Muse-EEG-Toolkit/tree/master/sampleApp) is provided that shows example usage of the above:
 
 ![Device List](https://raw.githubusercontent.com/padster/Muse-EEG-Toolkit/master/images/deviceList.png)
+
 Shows the list of devices found, current scanning status, and lets a user select a device.
 
 ![Device Details](https://raw.githubusercontent.com/padster/Muse-EEG-Toolkit/master/images/deviceDetails.png)
+
 Shows the device connection status, the isGood for each sensor, and a scrolling graph of a raw channel as a SurfaceView and GLSurfaceView.
+
+#### Future plans
+The following list are some ideas of what will likely be added to the Toolkit:
+* Time Series for each (sensor, frequency band) pair.
+* ViewModel that is just the last value of a metric for each channel.
+* View that draws the above single live value - e.g. level indicator that shows the last alpha value.
+* View that draws a histogram, and updates its heights live as more values come in.
+* TimeSeries mergers, which allow you to take multiple time series and combine into new ones (e.g. average the four alpha values across the sensors, or divide alpha by beta, etc...)
+* Optimize the live streaming VM to reuse listeners if multiple calls try listening to the same data source (e.g. one raw value from EEG1, one raw value from EEG2, should reuse the EEG listener).
+
+The list is tentative however, and may change. If you have any suggestions, file an issue here. Pull requests also welcome to add anything that seems useful!
