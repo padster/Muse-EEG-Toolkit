@@ -10,6 +10,8 @@ import com.choosemuse.libmuse.Muse;
 import com.choosemuse.libmuse.MuseListener;
 import com.choosemuse.libmuse.MuseManagerAndroid;
 
+import eeg.useit.today.eegtoolkit.common.FrequencyBands.Band;
+import eeg.useit.today.eegtoolkit.common.FrequencyBands.ValueType;
 import eeg.useit.today.eegtoolkit.sampleapp.databinding.ActivityDeviceDetailsBinding;
 import eeg.useit.today.eegtoolkit.view.graph.GraphGLView;
 import eeg.useit.today.eegtoolkit.view.graph.GraphSurfaceView;
@@ -44,6 +46,10 @@ public class DeviceDetailsActivity extends AppCompatActivity {
         DataBindingUtil.setContentView(this, R.layout.activity_device_details);
     binding.setDeviceVM(deviceVM);
     binding.setConnectionVM(deviceVM.createSensorConnection());
+    binding.setThetaVM(deviceVM.createFrequencyLiveValue(Band.THETA, ValueType.SCORE));
+    binding.setDeltaVM(deviceVM.createFrequencyLiveValue(Band.DELTA, ValueType.SCORE));
+    binding.setAlphaVM(deviceVM.createFrequencyLiveValue(Band.ALPHA, ValueType.SCORE));
+    binding.setBetaVM( deviceVM.createFrequencyLiveValue(Band.BETA,  ValueType.SCORE));
 
     // Attach the live data to the graph views.
     TimeSeries rawSeries3 = deviceVM.createRawTimeSeries(Eeg.EEG3, DURATION_SEC);
@@ -51,6 +57,16 @@ public class DeviceDetailsActivity extends AppCompatActivity {
     this.surfaceView.setTimeSeries(rawSeries3);
     this.glView = (GraphGLView) findViewById(R.id.graphGL);
     this.glView.setTimeSeries(rawSeries3);
+
+    // Bind action bar, seems like this can't be done in the layout :(
+    deviceVM.addOnPropertyChangedCallback(new Observable.OnPropertyChangedCallback() {
+      @Override
+      public void onPropertyChanged(Observable sender, int propertyId) {
+        DeviceDetailsActivity.this.getSupportActionBar().setTitle(
+            String.format("%s: %s", deviceVM.getName(), deviceVM.getConnectionState())
+        );
+      }
+    });
 
     // And attach the desired muse to the VM once connected.
     final String macAddress = getIntent().getExtras().getString("mac");

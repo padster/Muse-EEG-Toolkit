@@ -6,7 +6,7 @@ android {
 
     defaultConfig {
         applicationId "eeg.useit.today.eegtools"
-        minSdkVersion 23
+        minSdkVersion 19
         targetSdkVersion 25
         versionCode 1
         versionName "1.0"

@@ -10,22 +10,17 @@
     <data>
         <variable name="deviceVM" type="eeg.useit.today.eegtoolkit.vm.StreamingDeviceViewModel" />
         <variable name="connectionVM" type="eeg.useit.today.eegtoolkit.vm.SensorGoodViewModel" />
+
+        <variable name="thetaVM" type="eeg.useit.today.eegtoolkit.vm.FrequencyBandViewModel" />
+        <variable name="deltaVM" type="eeg.useit.today.eegtoolkit.vm.FrequencyBandViewModel" />
+        <variable name="alphaVM" type="eeg.useit.today.eegtoolkit.vm.FrequencyBandViewModel" />
+        <variable name="betaVM" type="eeg.useit.today.eegtoolkit.vm.FrequencyBandViewModel" />
     </data>
 
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context="eeg.useit.today.eegtoolkit.sampleapp.DeviceDetailsActivity">
-
-        <TextView
-            android:id="@+id/textView6"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@{`Status: ` + deviceVM.getConnectionState().name()}"
-            app:layout_constraintTop_toTopOf="parent"
-            android:layout_marginTop="8dp"
-            android:layout_marginRight="8dp"
-            app:layout_constraintRight_toRightOf="parent"/>
 
 
         <CheckBox
@@ -50,9 +45,9 @@
             android:text="Left Forehead"
             android:clickable="false"
             android:checked='@{connectionVM.connected[1]}'
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/connected0"
-            android:layout_marginStart="8dp"/>
+            android:layout_marginStart="8dp"
+            app:layout_constraintLeft_toRightOf="@+id/connected0"
+            app:layout_constraintTop_toTopOf="parent"/>
 
         <CheckBox
             android:id="@+id/connected2"
@@ -76,18 +71,18 @@
             android:layout_marginTop="8dp"
             android:clickable="false"
             android:checked='@{connectionVM.connected[3]}'
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/connected2"
-            android:layout_marginStart="8dp"/>
+            app:layout_constraintTop_toBottomOf="@+id/connected1"
+            android:layout_marginStart="8dp"
+            app:layout_constraintLeft_toRightOf="@+id/connected2"/>
 
         <TextView
             android:id="@+id/textView4"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="GraphGLView:"
-            app:layout_constraintTop_toBottomOf="@+id/connected3"
+            app:layout_constraintTop_toBottomOf="@+id/connected2"
             android:layout_marginLeft="8dp"
-            app:layout_constraintLeft_toLeftOf="@+id/connected3"
+            app:layout_constraintLeft_toLeftOf="@+id/connected2"
             android:layout_marginStart="8dp"/>
 
         <eeg.useit.today.eegtoolkit.view.graph.GraphGLView
@@ -117,6 +112,107 @@
             app:layout_constraintTop_toBottomOf="@+id/textView5"
             custom:durationSec="5"
             custom:lineColor="green"/>
+
+        <TextView
+            android:id="@+id/deltaText"
+            android:layout_width="92dp"
+            android:layout_height="29dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="8dp"
+            android:text="Delta Score:"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/graphSurface"/>
+
+        <ProgressBar
+            android:id="@+id/deltaProgress"
+            style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+            android:progress="@{(int)(Double.valueOf(100) * deltaVM.average)}"
+            android:layout_width="0dp"
+            android:layout_height="30dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginTop="8dp"
+            android:max="100"
+            app:layout_constraintLeft_toRightOf="@+id/deltaText"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/graphSurface"
+            tools:layout_editor_absoluteX="22dp"/>
+
+        <TextView
+            android:id="@+id/thetaText"
+            android:layout_width="92dp"
+            android:layout_height="30dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="8dp"
+            android:text="Theta Score:"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/deltaText"/>
+
+        <ProgressBar
+            android:id="@+id/thetaProgress"
+            style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+            android:progress="@{(int)(Double.valueOf(100) * thetaVM.average)}"
+            android:layout_width="0dp"
+            android:layout_height="30dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginTop="8dp"
+            android:max="100"
+            app:layout_constraintLeft_toRightOf="@+id/thetaText"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/deltaProgress"
+            tools:layout_editor_absoluteX="22dp"/>
+
+
+        <TextView
+            android:id="@+id/alphaText"
+            android:layout_width="92dp"
+            android:layout_height="30dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="8dp"
+            android:text="Alpha Score:"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/thetaText"/>
+
+        <ProgressBar
+            android:id="@+id/alphaProgress"
+            style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+            android:progress="@{(int)(Double.valueOf(100) * alphaVM.average)}"
+            android:layout_width="0dp"
+            android:layout_height="30dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginTop="8dp"
+            android:max="100"
+            app:layout_constraintLeft_toRightOf="@+id/alphaText"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/thetaProgress"
+            tools:layout_editor_absoluteX="22dp"/>
+
+        <TextView
+            android:id="@+id/betaText"
+            android:layout_width="92dp"
+            android:layout_height="30dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="8dp"
+            android:text="Beta Score:"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/alphaText"/>
+
+        <ProgressBar
+            android:id="@+id/betaProgress"
+            style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+            android:progress="@{(int)(Double.valueOf(100) * betaVM.average)}"
+            android:layout_width="0dp"
+            android:layout_height="30dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginTop="8dp"
+            android:max="100"
+            app:layout_constraintLeft_toRightOf="@+id/betaText"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/alphaProgress"
+            tools:layout_editor_absoluteX="22dp"/>
 
     </android.support.constraint.ConstraintLayout>
 

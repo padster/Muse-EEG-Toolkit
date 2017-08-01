@@ -10,14 +10,14 @@ import com.choosemuse.libmuse.Muse;
 import com.choosemuse.libmuse.MuseConnectionListener;
 import com.choosemuse.libmuse.MuseConnectionPacket;
 import com.choosemuse.libmuse.MuseDataListener;
-import com.choosemuse.libmuse.MuseDataPacket;
 import com.choosemuse.libmuse.MuseDataPacketType;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import eeg.useit.today.eegtoolkit.Constants;
-import eeg.useit.today.eegtoolkit.common.BaseDataPacketListener;
+import eeg.useit.today.eegtoolkit.common.FrequencyBands.Band;
+import eeg.useit.today.eegtoolkit.common.FrequencyBands.ValueType;
 
 /**
  * ViewModel for a Muse device that is streaming data.
@@ -49,14 +49,24 @@ public class StreamingDeviceViewModel extends BaseObservable {
     return this.connectionState;
   }
 
-  /** @return Build a new live VM for each sensor's isGood status. */
+  /** @return Bluetooth device name, or default if not yet connected. */
+  public String getName() {
+    return this.muse == null ? "No device" : this.muse.getName();
+  }
+
+  /** @return A new live VM for each sensor's isGood status. */
   public SensorGoodViewModel createSensorConnection() {
     return new SensorGoodViewModel(this);
   }
 
-  /** @return Build a new live VM for a single time series from a raw data channel. */
+  /** @return A new live VM for a single time series from a raw data channel. */
   public RawChannelViewModel createRawTimeSeries(final Eeg channel, int durationSec) {
     return new RawChannelViewModel(this, channel, durationSec * 1000L);
+  }
+
+  /** @return A new live VM for each sensor's frequency value for a given band/type combo. */
+  public FrequencyBandViewModel createFrequencyLiveValue(Band band, ValueType type) {
+    return new FrequencyBandViewModel(this, band, type);
   }
 
   /**

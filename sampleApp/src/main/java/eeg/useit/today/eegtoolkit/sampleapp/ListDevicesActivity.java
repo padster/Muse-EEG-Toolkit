@@ -88,6 +88,7 @@ public class ListDevicesActivity extends AppCompatActivity {
   }
 
 
+
   @TargetApi(Build.VERSION_CODES.M)
   private void askPermissions() {
     List<String> permissionsNeeded = new ArrayList<>();
