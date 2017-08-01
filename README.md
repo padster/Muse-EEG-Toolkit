@@ -7,6 +7,7 @@ EEG Toolkit is an Android library for interfacing with Muse devices. It aims to 
 * StreamingDeviceViewModel, a connection to a Muse device that is streaming data.
 * TimeSeries, a live stream of (timestamp, value) that supports history and snapshots.
 * SensorGoodViewModel, an observable set of the last isGood values for each sensor.
+* FrequencyBandViewModel, an observable set of the last frequency band values for each sensor, with many options for which band values to use.
 * RawChannelViewModel, which converts a single raw channel into its timeseries.
 
 More are planned, both for values coming from the Muse (e.g. Frequency band time series) as well as ones that assist in processing the data by combining multiple sources.
@@ -29,8 +30,7 @@ Shows the device connection status, the isGood for each sensor, and a scrolling 
 #### Future plans
 The following list are some ideas of what will likely be added to the Toolkit:
 * Time Series for each (sensor, frequency band) pair.
-* ViewModel that is just the last value of a metric for each channel.
-* View that draws the above single live value - e.g. level indicator that shows the last alpha value.
+* Generic ViewModel that is just the last value of a time series.
 * View that draws a histogram, and updates its heights live as more values come in.
 * TimeSeries mergers, which allow you to take multiple time series and combine into new ones (e.g. average the four alpha values across the sensors, or divide alpha by beta, etc...)
 * Optimize the live streaming VM to reuse listeners if multiple calls try listening to the same data source (e.g. one raw value from EEG1, one raw value from EEG2, should reuse the EEG listener).
