@@ -32,6 +32,11 @@
             android:theme="@style/AppTheme">
         </activity>
         <activity
+            android:name=".MoreDeviceDetailsActivity"
+            android:label="MoreDeviceDetailsActivity"
+            android:theme="@style/AppTheme">
+        </activity>
+        <activity
             android:name=".RecordActivity"
             android:label="@string/title_activity_record"
             android:theme="@style/AppTheme">

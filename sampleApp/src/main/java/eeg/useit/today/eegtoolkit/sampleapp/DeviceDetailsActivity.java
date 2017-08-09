@@ -116,7 +116,12 @@ public class DeviceDetailsActivity extends AppCompatActivity {
 
   @Override
   public boolean onOptionsItemSelected(MenuItem item) {
-    if (item.getItemId() == R.id.recordOption) {
+    if (item.getItemId() == R.id.moreViews) {
+      Intent intent = new Intent(this, MoreDeviceDetailsActivity.class);
+      intent.putExtra("mac", this.deviceVM.getMacAddress());
+      this.startActivity(intent);
+      return true;
+    } else if (item.getItemId() == R.id.recordOption) {
       Intent intent = new Intent(this, RecordActivity.class);
       intent.putExtra("mac", this.deviceVM.getMacAddress());
       this.startActivity(intent);

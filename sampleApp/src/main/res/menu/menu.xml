@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:id="@+id/recordOption"
-          android:title="Record" />
+    <item android:id="@+id/moreViews" android:title="More Views" />
+    <item android:id="@+id/recordOption" android:title="Record to file" />
 </menu>
