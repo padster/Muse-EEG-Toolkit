@@ -7,7 +7,9 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
 
-    <uses-feature android:glEsVersion="0x00020000" android:required="true" />
+    <uses-feature
+        android:glEsVersion="0x00020000"
+        android:required="true"/>
 
     <application
         android:allowBackup="true"
@@ -16,7 +18,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name="eeg.useit.today.eegtoolkit.sampleapp.ListDevicesActivity">
+        <activity android:name=".ListDevicesActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
@@ -24,8 +26,13 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="eeg.useit.today.eegtoolkit.sampleapp.DeviceDetailsActivity"
+            android:name=".DeviceDetailsActivity"
             android:label="@string/title_activity_device_details"
+            android:theme="@style/AppTheme">
+        </activity>
+        <activity
+            android:name=".RecordActivity"
+            android:label="@string/title_activity_record"
             android:theme="@style/AppTheme">
         </activity>
     </application>

@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">EegTools</string>
     <string name="title_activity_device_details">DeviceDetailsActivity</string>
+    <string name="title_activity_record">RecordActivity</string>
 </resources>

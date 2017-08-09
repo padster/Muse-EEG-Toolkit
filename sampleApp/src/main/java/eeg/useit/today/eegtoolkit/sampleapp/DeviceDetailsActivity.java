@@ -1,15 +1,21 @@
 package eeg.useit.today.eegtoolkit.sampleapp;
 
+import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.databinding.Observable;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 
 import com.choosemuse.libmuse.Eeg;
 import com.choosemuse.libmuse.Muse;
 import com.choosemuse.libmuse.MuseListener;
 import com.choosemuse.libmuse.MuseManagerAndroid;
 
+import eeg.useit.today.eegtoolkit.Constants;
 import eeg.useit.today.eegtoolkit.common.FrequencyBands.Band;
 import eeg.useit.today.eegtoolkit.common.FrequencyBands.ValueType;
 import eeg.useit.today.eegtoolkit.sampleapp.databinding.ActivityDeviceDetailsBinding;
@@ -86,7 +92,7 @@ public class DeviceDetailsActivity extends AppCompatActivity {
       });
     }
 
-    // Finally, make sure to refresh the graphs once the timeseries changes.
+    // Make sure to refresh the graphs once the timeseries changes.
     rawSeries3.addOnPropertyChangedCallback(new Observable.OnPropertyChangedCallback() {
       @Override public void onPropertyChanged(Observable sender, int propertyId) {
         updateGraphs();
@@ -98,5 +104,23 @@ public class DeviceDetailsActivity extends AppCompatActivity {
   private void updateGraphs() {
     surfaceView.postInvalidate();
     glView.postInvalidate();
+  }
+
+
+  @Override
+  public boolean onCreateOptionsMenu(Menu menu) {
+    MenuInflater inflater = getMenuInflater();
+    inflater.inflate(R.menu.menu, menu);
+    return true;
+  }
+
+  @Override
+  public boolean onOptionsItemSelected(MenuItem item) {
+    if (item.getItemId() == R.id.recordOption) {
+      Intent intent = new Intent(this, RecordActivity.class);
+      this.startActivity(intent);
+      return true;
+    }
+    return false;
   }
 }
