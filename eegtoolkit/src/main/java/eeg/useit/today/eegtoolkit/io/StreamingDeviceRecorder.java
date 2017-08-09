@@ -1,6 +1,9 @@
 package eeg.useit.today.eegtoolkit.io;
 
 import com.choosemuse.libmuse.ConnectionState;
+import com.choosemuse.libmuse.MuseDataPacketType;
+
+import java.util.Set;
 
 import eeg.useit.today.eegtoolkit.vm.StreamingDeviceViewModel;
 
@@ -9,23 +12,36 @@ import eeg.useit.today.eegtoolkit.vm.StreamingDeviceViewModel;
  */
 public class StreamingDeviceRecorder {
   private final StreamingDeviceViewModel device;
+  private final Set<MuseDataPacketType> types;
 
-  private boolean isRunning = false;
+  private boolean running = false;
 
-  public StreamingDeviceRecorder(StreamingDeviceViewModel device) {
+  public StreamingDeviceRecorder(
+      StreamingDeviceViewModel device, Set<MuseDataPacketType> types
+  ) {
     this.device = device;
+    this.types = types;
+  }
+
+  /** @return Whether the recording is currently taking place. */
+  public boolean isRunning() {
+    return this.running;
   }
 
   /** Start the recording, can only be called once. */
   public void start() {
-    assert !isRunning;
+    assert !running;
     assert this.device.getConnectionState() == ConnectionState.CONNECTED;
-    isRunning = true;
+    running = true;
   }
 
-  /** Stops the recording, can only be called once. */
-  public void stop() {
+  /**
+   * Stops the recording, can only be called once.
+   * @return File name where the recording was saved.
+   */
+  public String stopAndSave() {
     // TODO
-    isRunning = false;
+    running = false;
+    return "HACK.txt";
   }
 }

@@ -40,7 +40,6 @@ public class StreamingDeviceViewModel extends BaseObservable {
     assert this.connectionState == ConnectionState.DISCONNECTED;
     this.muse = muse;
     this.connectionState = this.muse.getConnectionState();
-    Log.i(Constants.TAG, "Set muse, which is in state: " + this.muse.getConnectionState());
     if (!this.connectionCallbacks.isEmpty()) {
       this.connectToMuse();
     }

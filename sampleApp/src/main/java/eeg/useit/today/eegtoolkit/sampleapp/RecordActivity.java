@@ -37,8 +37,6 @@ public class RecordActivity extends AppCompatActivity {
     binding.setRecordVM(viewModel);
     binding.setDeviceVM(deviceVM);
 
-    Log.i(Constants.TAG, "ADDING CALLBACK TO UPDATE TITLE");
-
     // Bind action bar, seems like this can't be done in the layout :(
     deviceVM.addOnPropertyChangedCallback(new Observable.OnPropertyChangedCallback() {
       @Override
@@ -51,12 +49,10 @@ public class RecordActivity extends AppCompatActivity {
 
     // And attach the desired muse to the VM once connected.
     final String macAddress = getIntent().getExtras().getString("mac");
-    Log.i(Constants.TAG, "CONNECTING TO MUSE: " + macAddress);
     if (macAddress != null) {
       boolean connected = false;
       for (Muse muse : MuseManagerAndroid.getInstance().getMuses()) {
         if (macAddress.equals(muse.getMacAddress())) {
-          Log.i(Constants.TAG, "ALREADY CONNECTED!!");
           RecordActivity.this.deviceVM.setMuse(muse);
           RecordActivity.this.getSupportActionBar().setTitle(
               String.format("%s: %s", deviceVM.getName(), deviceVM.getConnectionState())

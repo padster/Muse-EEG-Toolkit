@@ -1,13 +1,15 @@
 package eeg.useit.today.eegtoolkit.sampleapp.vm;
 
 import android.databinding.BaseObservable;
-import android.databinding.Bindable;
 import android.databinding.Observable;
-import android.util.Log;
 
 import com.choosemuse.libmuse.ConnectionState;
+import com.choosemuse.libmuse.MuseDataPacketType;
 
-import eeg.useit.today.eegtoolkit.Constants;
+import java.util.HashSet;
+import java.util.Set;
+
+import eeg.useit.today.eegtoolkit.io.StreamingDeviceRecorder;
 import eeg.useit.today.eegtoolkit.vm.StreamingDeviceViewModel;
 
 /**
@@ -18,6 +20,12 @@ public class RecordVM extends BaseObservable {
 
   private boolean useRaw = false;
   private boolean useAlpha = false;
+
+  // Performs recording, null before recording has started.
+  private StreamingDeviceRecorder recorder = null;
+
+  // Location of the recording. set after stopping.
+  private String fileName;
 
   public RecordVM(StreamingDeviceViewModel device) {
     this.device = device;
@@ -30,10 +38,58 @@ public class RecordVM extends BaseObservable {
     });
   }
 
+  /** @return Caption to be displayed on record button. */
+  public String getButtonText() {
+    if (recorder == null) {
+      return "Record";
+    } else if (recorder.isRunning()) {
+      return "Stop";
+    } else {
+      return "Saved to " + this.fileName;
+    }
+  }
+
+
+  /** @return if recording is possible: requires a connected device, and something to record. */
   public boolean canRecord() {
-    Log.i(Constants.TAG, useRaw + " / " + useAlpha + " / " + device.getConnectionState());
     boolean somethingSelected = (useRaw || useAlpha);
-    return somethingSelected && device.getConnectionState() == ConnectionState.CONNECTED;
+    boolean recordingStopped = recorder != null && !recorder.isRunning();
+    return somethingSelected && !recordingStopped
+        && device.getConnectionState() == ConnectionState.CONNECTED;
+  }
+
+  /** Handles the record button being pressed. */
+  public void handleRecord() {
+    if (recorder == null) {
+      this.startRecording();
+    } else if (recorder.isRunning()) {
+      this.stopRecording();
+    } else {
+      // Nothing to see here, shouldn't be pressing it.
+    }
+  }
+
+  /** Starts recording the packets from the device. */
+  private void startRecording() {
+    assert this.canRecord();
+    assert this.recorder == null;
+    Set<MuseDataPacketType> types = new HashSet<>();
+    if (useRaw) {
+      types.add(MuseDataPacketType.EEG);
+    }
+    if (useAlpha) {
+      types.add(MuseDataPacketType.ALPHA_RELATIVE);
+    }
+    this.recorder = new StreamingDeviceRecorder(this.device, types);
+    this.recorder.start();
+    notifyChange();
+  }
+
+  /** Stops recording, saving result to file. */
+  private void stopRecording() {
+    assert this.recorder != null && this.recorder.isRunning();
+    this.fileName = this.recorder.stopAndSave();
+    notifyChange();
   }
 
   // GET checkbox values
