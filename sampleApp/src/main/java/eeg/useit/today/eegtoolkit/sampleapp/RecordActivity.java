@@ -22,7 +22,7 @@ import eeg.useit.today.eegtoolkit.vm.StreamingDeviceViewModel;
 public class RecordActivity extends AppCompatActivity {
   /** The live device VM backing this view. */
   private final StreamingDeviceViewModel deviceVM = new StreamingDeviceViewModel();
-  private final RecordVM viewModel = new RecordVM(deviceVM);
+  private final RecordVM viewModel = new RecordVM(this, deviceVM);
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -66,10 +66,8 @@ public class RecordActivity extends AppCompatActivity {
         MuseManagerAndroid.getInstance().setMuseListener(new MuseListener() {
           @Override
           public void museListChanged() {
-            Log.i(Constants.TAG, "Connected to " + MuseManagerAndroid.getInstance().getMuses().size());
             for (Muse muse : MuseManagerAndroid.getInstance().getMuses()) {
               if (macAddress.equals(muse.getMacAddress())) {
-                Log.i(Constants.TAG, "CONNECTED!");
                 RecordActivity.this.deviceVM.setMuse(muse);
                 MuseManagerAndroid.getInstance().stopListening();
                 break;

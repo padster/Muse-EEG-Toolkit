@@ -1,5 +1,6 @@
 package eeg.useit.today.eegtoolkit.sampleapp.vm;
 
+import android.content.Context;
 import android.databinding.BaseObservable;
 import android.databinding.Observable;
 
@@ -9,6 +10,7 @@ import com.choosemuse.libmuse.MuseDataPacketType;
 import java.util.HashSet;
 import java.util.Set;
 
+import eeg.useit.today.eegtoolkit.Constants;
 import eeg.useit.today.eegtoolkit.io.StreamingDeviceRecorder;
 import eeg.useit.today.eegtoolkit.vm.StreamingDeviceViewModel;
 
@@ -16,6 +18,7 @@ import eeg.useit.today.eegtoolkit.vm.StreamingDeviceViewModel;
  * ViewModel for options set before a recording, and performs the recording.
  */
 public class RecordVM extends BaseObservable {
+  private final Context context;
   private final StreamingDeviceViewModel device;
 
   private boolean useRaw = false;
@@ -27,7 +30,8 @@ public class RecordVM extends BaseObservable {
   // Location of the recording. set after stopping.
   private String fileName;
 
-  public RecordVM(StreamingDeviceViewModel device) {
+  public RecordVM(Context context, StreamingDeviceViewModel device) {
+    this.context = context;
     this.device = device;
     this.device.addOnPropertyChangedCallback(new OnPropertyChangedCallback() {
       @Override
@@ -80,7 +84,7 @@ public class RecordVM extends BaseObservable {
     if (useAlpha) {
       types.add(MuseDataPacketType.ALPHA_RELATIVE);
     }
-    this.recorder = new StreamingDeviceRecorder(this.device, types);
+    this.recorder = new StreamingDeviceRecorder(context, Constants.RECORDING_PREFIX, this.device, types);
     this.recorder.start();
     notifyChange();
   }

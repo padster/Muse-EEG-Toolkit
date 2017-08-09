@@ -87,14 +87,15 @@ public class ListDevicesActivity extends AppCompatActivity {
     }
   }
 
-
-
   @TargetApi(Build.VERSION_CODES.M)
   private void askPermissions() {
     List<String> permissionsNeeded = new ArrayList<>();
     final List<String> permissionsList = new ArrayList<>();
     if (!addPermission(permissionsList, Manifest.permission.ACCESS_FINE_LOCATION)) {
       permissionsNeeded.add("Show Location");
+    }
+    if (!addPermission(permissionsList, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+      permissionsNeeded.add("Write to file");
     }
 
     if (permissionsList.size() > 0) {

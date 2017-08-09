@@ -103,6 +103,11 @@ public class StreamingDeviceViewModel extends BaseObservable {
     }
   }
 
+  /** Remove all listeners that have been added. */
+  public void removeAllListeners() {
+    this.muse.unregisterAllListeners();
+  }
+
   /** Call to force connection to the Muse device. */
   private void connectToMuse() {
     if (this.muse.getConnectionState() == ConnectionState.CONNECTED) {
