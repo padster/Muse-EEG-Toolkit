@@ -39,9 +39,12 @@ public class StreamingDeviceViewModel extends BaseObservable {
     assert this.muse == null;
     assert this.connectionState == ConnectionState.DISCONNECTED;
     this.muse = muse;
+    this.connectionState = this.muse.getConnectionState();
+    Log.i(Constants.TAG, "Set muse, which is in state: " + this.muse.getConnectionState());
     if (!this.connectionCallbacks.isEmpty()) {
       this.connectToMuse();
     }
+    notifyChange();
   }
 
   @Bindable
@@ -52,6 +55,11 @@ public class StreamingDeviceViewModel extends BaseObservable {
   /** @return Bluetooth device name, or default if not yet connected. */
   public String getName() {
     return this.muse == null ? "No device" : this.muse.getName();
+  }
+
+  /** @return Bluetooth mac address, or null if not yet connected. */
+  public String getMacAddress() {
+    return this.muse == null ? null : this.muse.getMacAddress();
   }
 
   /** @return A new live VM for each sensor's isGood status. */
@@ -98,28 +106,35 @@ public class StreamingDeviceViewModel extends BaseObservable {
 
   /** Call to force connection to the Muse device. */
   private void connectToMuse() {
-    assert this.connectionState == ConnectionState.DISCONNECTED;
-    Log.i(Constants.TAG, "Need connection, running async");
-    this.connectionState = connectionState.CONNECTING;
-    this.muse.registerConnectionListener(new MuseConnectionListener() {
-      @Override public void receiveMuseConnectionPacket(MuseConnectionPacket packet, Muse muse) {
-        StreamingDeviceViewModel.this.handleMuseConnection(packet);
-      }
-    });
-    this.muse.runAsynchronously();
+    if (this.muse.getConnectionState() == ConnectionState.CONNECTED) {
+      // Already connected:
+      this.handleConnection();
+    } else {
+      assert this.connectionState == ConnectionState.DISCONNECTED;
+      Log.i(Constants.TAG, "Need connection, running async");
+      this.connectionState = connectionState.CONNECTING;
+      this.muse.registerConnectionListener(new MuseConnectionListener() {
+        @Override
+        public void receiveMuseConnectionPacket(MuseConnectionPacket packet, Muse muse) {
+          connectionState = packet.getCurrentConnectionState();
+          if (connectionState == ConnectionState.CONNECTED) {
+            StreamingDeviceViewModel.this.handleConnection();
+          }
+        }
+      });
+      this.muse.runAsynchronously();
+    }
   }
 
   /** Handle connection change to the muse device. */
-  private void handleMuseConnection(MuseConnectionPacket packet) {
-    this.connectionState = packet.getCurrentConnectionState();
-    if (connectionState == ConnectionState.CONNECTED) {
-      Log.i(Constants.TAG, "Connected!");
-      // Connected, update everything that was waiting for this...
-      for(Runnable callback : this.connectionCallbacks) {
-        callback.run();
-      }
-      this.connectionCallbacks.clear();
+  private void handleConnection() {
+    Log.i(Constants.TAG, "Connected!");
+    this.connectionState = ConnectionState.CONNECTED;
+    // Connected, update everything that was waiting for this...
+    for(Runnable callback : this.connectionCallbacks) {
+      callback.run();
     }
+    this.connectionCallbacks.clear();
     notifyChange();
   }
 }

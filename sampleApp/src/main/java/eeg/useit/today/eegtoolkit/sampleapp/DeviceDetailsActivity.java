@@ -32,7 +32,7 @@ public class DeviceDetailsActivity extends AppCompatActivity {
   public static int DURATION_SEC = 5;
 
   /** The live device VM backing this view. */
-  private StreamingDeviceViewModel deviceVM = new StreamingDeviceViewModel();
+  private final StreamingDeviceViewModel deviceVM = new StreamingDeviceViewModel();
 
   /** Holder for the scrolling graph based off a SurfaceView. */
   private GraphSurfaceView surfaceView;
@@ -118,6 +118,7 @@ public class DeviceDetailsActivity extends AppCompatActivity {
   public boolean onOptionsItemSelected(MenuItem item) {
     if (item.getItemId() == R.id.recordOption) {
       Intent intent = new Intent(this, RecordActivity.class);
+      intent.putExtra("mac", this.deviceVM.getMacAddress());
       this.startActivity(intent);
       return true;
     }
