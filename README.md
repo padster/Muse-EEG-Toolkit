@@ -29,10 +29,9 @@ Shows the device connection status, the isGood for each sensor, and a scrolling 
 
 #### Future plans
 The following list are some ideas of what will likely be added to the Toolkit:
-* Time Series for each (sensor, frequency band) pair.
-* Generic ViewModel that is just the last value of a time series.
 * View that draws a histogram, and updates its heights live as more values come in.
-* TimeSeries mergers, which allow you to take multiple time series and combine into new ones (e.g. average the four alpha values across the sensors, or divide alpha by beta, etc...)
 * Optimize the live streaming VM to reuse listeners if multiple calls try listening to the same data source (e.g. one raw value from EEG1, one raw value from EEG2, should reuse the EEG listener).
+* Clean up all the listenable objects.
+* Fix up lifecycle, unlistening to things no longer needed.
 
 The list is tentative however, and may change. If you have any suggestions, file an issue here. Pull requests also welcome to add anything that seems useful!
