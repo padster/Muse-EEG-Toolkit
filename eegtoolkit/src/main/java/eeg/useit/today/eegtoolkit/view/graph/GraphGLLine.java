@@ -2,7 +2,6 @@ package eeg.useit.today.eegtoolkit.view.graph;
 
 import android.content.Context;
 import android.opengl.GLES20;
-import android.util.Log;
 
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
@@ -10,7 +9,7 @@ import java.nio.FloatBuffer;
 
 import eeg.useit.today.eegtoolkit.Constants;
 import eeg.useit.today.eegtoolkit.R;
-import eeg.useit.today.eegtoolkit.vm.TimeSeriesSnapshot;
+import eeg.useit.today.eegtoolkit.model.TimeSeriesSnapshot;
 
 /**
  * All the wrapper code needed to draw a line in GLES 2.0
@@ -50,7 +49,7 @@ public class GraphGLLine {
    * @param mvpMatrix
    * @param snapshot
    */
-  public void draw(float[] mvpMatrix, TimeSeriesSnapshot snapshot) {
+  public void draw(float[] mvpMatrix, TimeSeriesSnapshot<Double> snapshot) {
     // Add program to OpenGL ES environment
     GLES20.glUseProgram(programHandle);
 
@@ -95,7 +94,7 @@ public class GraphGLLine {
   /**
    * Convert the timeseries snapshot into a run of (x, y, z) floats.
    */
-  private float[] snapshotToFloat(TimeSeriesSnapshot snapshot) {
+  private float[] snapshotToFloat(TimeSeriesSnapshot<Double> snapshot) {
     int n = snapshot.length;
 
     // Calculate start and end timestamps

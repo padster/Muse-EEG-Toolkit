@@ -9,8 +9,8 @@ import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
 
 import eeg.useit.today.eegtoolkit.Util;
-import eeg.useit.today.eegtoolkit.vm.TimeSeries;
-import eeg.useit.today.eegtoolkit.vm.TimeSeriesSnapshot;
+import eeg.useit.today.eegtoolkit.model.TimeSeries;
+import eeg.useit.today.eegtoolkit.model.TimeSeriesSnapshot;
 
 /**
  * OpenGL renderer that draws a timeseries line onto a GLSurfaceView.
@@ -33,7 +33,7 @@ public class GraphGLRenderer implements GLSurfaceView.Renderer {
   private GraphGLLine line;
 
   /** Source of timeseries data to draw. Set when view is attached. */
-  private TimeSeries timeSeries;
+  private TimeSeries<Double> timeSeries;
 
   /** Model View Projection Matrix to convert world to view coordinates. */
   private final float[] mMVPMatrix = new float[16];
@@ -52,7 +52,7 @@ public class GraphGLRenderer implements GLSurfaceView.Renderer {
   }
 
   /** Attach a viewmodel to the renderer. */
-  public void setTimeSeries(TimeSeries ts) {
+  public void setTimeSeries(TimeSeries<Double> ts) {
     assert this.timeSeries == null; // Only do once...
     this.timeSeries = ts;
   }
@@ -83,7 +83,7 @@ public class GraphGLRenderer implements GLSurfaceView.Renderer {
     }
 
     // Otherwise, make a snapshot and draw it:
-    TimeSeriesSnapshot snapshot = this.timeSeries.getRecentSnapshot();
+    TimeSeriesSnapshot<Double> snapshot = this.timeSeries.getRecentSnapshot(Double.class);
     line.draw(mMVPMatrix, snapshot);
   }
 }

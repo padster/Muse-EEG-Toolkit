@@ -4,13 +4,11 @@ import android.databinding.DataBindingUtil;
 import android.databinding.Observable;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 
 import com.choosemuse.libmuse.Muse;
-import com.choosemuse.libmuse.MuseListener;
 import com.choosemuse.libmuse.MuseManagerAndroid;
 
-import eeg.useit.today.eegtoolkit.Constants;
+import eeg.useit.today.eegtoolkit.common.MuseManagerUtil;
 import eeg.useit.today.eegtoolkit.sampleapp.databinding.ActivityRecordBinding;
 import eeg.useit.today.eegtoolkit.sampleapp.vm.RecordVM;
 import eeg.useit.today.eegtoolkit.vm.StreamingDeviceViewModel;
@@ -49,33 +47,11 @@ public class RecordActivity extends AppCompatActivity {
 
     // And attach the desired muse to the VM once connected.
     final String macAddress = getIntent().getExtras().getString("mac");
-    if (macAddress != null) {
-      boolean connected = false;
-      for (Muse muse : MuseManagerAndroid.getInstance().getMuses()) {
-        if (macAddress.equals(muse.getMacAddress())) {
-          RecordActivity.this.deviceVM.setMuse(muse);
-          RecordActivity.this.getSupportActionBar().setTitle(
-              String.format("%s: %s", deviceVM.getName(), deviceVM.getConnectionState())
-          );
-          connected = true;
-          break;
-        }
+    MuseManagerUtil.getByMacAddress(macAddress, new MuseManagerUtil.MuseCallback() {
+      @Override
+      public void museFound(Muse muse) {
+        RecordActivity.this.deviceVM.setMuse(muse);
       }
-      if (!connected) {
-        MuseManagerAndroid.getInstance().startListening();
-        MuseManagerAndroid.getInstance().setMuseListener(new MuseListener() {
-          @Override
-          public void museListChanged() {
-            for (Muse muse : MuseManagerAndroid.getInstance().getMuses()) {
-              if (macAddress.equals(muse.getMacAddress())) {
-                RecordActivity.this.deviceVM.setMuse(muse);
-                MuseManagerAndroid.getInstance().stopListening();
-                break;
-              }
-            }
-          }
-        });
-      }
-    }
+    });
   }
 }

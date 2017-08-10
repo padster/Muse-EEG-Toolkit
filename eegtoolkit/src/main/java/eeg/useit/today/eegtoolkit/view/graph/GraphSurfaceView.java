@@ -1,19 +1,17 @@
 package eeg.useit.today.eegtoolkit.view.graph;
 
 import android.content.Context;
-import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.SurfaceView;
 
 import eeg.useit.today.eegtoolkit.Constants;
-import eeg.useit.today.eegtoolkit.R;
-import eeg.useit.today.eegtoolkit.vm.TimeSeries;
-import eeg.useit.today.eegtoolkit.vm.TimeSeriesSnapshot;
+import eeg.useit.today.eegtoolkit.model.LiveSeries;
+import eeg.useit.today.eegtoolkit.model.TimeSeries;
+import eeg.useit.today.eegtoolkit.model.TimeSeriesSnapshot;
 
 /**
  * SurfaceView that draws a timeseries line to the view.
@@ -28,7 +26,7 @@ public class GraphSurfaceView extends SurfaceView {
   private final int color;
 
   /** Source of timeseries data to draw. Set when view is attached. */
-  private TimeSeries timeSeries;
+  private TimeSeries<Double> timeSeries;
 
   /** Creates a SurfaceView graph by parsing attributes. */
   public GraphSurfaceView(Context context, AttributeSet attrs) {
@@ -49,8 +47,14 @@ public class GraphSurfaceView extends SurfaceView {
   }
 
   /** Connect the view to a viewmodel. */
-  public void setTimeSeries(TimeSeries ts) {
+  public void setTimeSeries(TimeSeries<Double> ts) {
+    assert this.timeSeries == null;
     this.timeSeries = ts;
+    ts.addListener(new LiveSeries.Listener<Double>() {
+      @Override public void valueAdded(long timestampMicro, Double data) {
+        GraphSurfaceView.this.invalidate();
+      }
+    });
   }
 
   @Override
@@ -65,7 +69,7 @@ public class GraphSurfaceView extends SurfaceView {
     }
 
     // Calculate bounds for the X axis.
-    TimeSeriesSnapshot snapshot = timeSeries.getRecentSnapshot();
+    TimeSeriesSnapshot<Double> snapshot = timeSeries.getRecentSnapshot(Double.class);
     long timeEndMicro = snapshot.timestamps[snapshot.length - 1];
     long timeDelta = this.durationSec * 1000000L; // POIUY
     long timeStartMicro = timeEndMicro - timeDelta; // HACK

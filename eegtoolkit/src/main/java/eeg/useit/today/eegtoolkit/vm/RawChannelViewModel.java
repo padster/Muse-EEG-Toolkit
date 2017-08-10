@@ -6,11 +6,12 @@ import com.choosemuse.libmuse.MuseDataPacket;
 import com.choosemuse.libmuse.MuseDataPacketType;
 
 import eeg.useit.today.eegtoolkit.common.BaseDataPacketListener;
+import eeg.useit.today.eegtoolkit.model.TimeSeries;
 
 /**
  * Given a device and a raw channel, present that channel's data as a TimeSeries.
  */
-public class RawChannelViewModel extends TimeSeries {
+public class RawChannelViewModel extends TimeSeries<Double> {
   public RawChannelViewModel(StreamingDeviceViewModel device, final Eeg channel, long maxAgeMS) {
     super(maxAgeMS);
 

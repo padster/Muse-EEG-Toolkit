@@ -4,7 +4,8 @@ import android.content.Context;
 import android.opengl.GLSurfaceView;
 import android.util.AttributeSet;
 
-import eeg.useit.today.eegtoolkit.vm.TimeSeries;
+import eeg.useit.today.eegtoolkit.model.LiveSeries;
+import eeg.useit.today.eegtoolkit.model.TimeSeries;
 
 /** GLSurfaceView that draws a timeseries line to the view. */
 public class GraphGLView extends GLSurfaceView {
@@ -33,8 +34,13 @@ public class GraphGLView extends GLSurfaceView {
   }
 
   /** Connect the view to a viewmodel. */
-  public void setTimeSeries(TimeSeries ts) {
+  public void setTimeSeries(TimeSeries<Double> ts) {
     // Delegate to renderer.
     this.renderer.setTimeSeries(ts);
+    ts.addListener(new LiveSeries.Listener<Double>() {
+      @Override public void valueAdded(long timestampMicro, Double data) {
+        GraphGLView.this.invalidate();
+      }
+    });
   }
 }

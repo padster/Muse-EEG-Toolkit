@@ -5,7 +5,6 @@ import android.databinding.DataBindingUtil;
 import android.databinding.Observable;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -15,14 +14,13 @@ import com.choosemuse.libmuse.Muse;
 import com.choosemuse.libmuse.MuseListener;
 import com.choosemuse.libmuse.MuseManagerAndroid;
 
-import eeg.useit.today.eegtoolkit.Constants;
 import eeg.useit.today.eegtoolkit.common.FrequencyBands.Band;
 import eeg.useit.today.eegtoolkit.common.FrequencyBands.ValueType;
 import eeg.useit.today.eegtoolkit.sampleapp.databinding.ActivityDeviceDetailsBinding;
 import eeg.useit.today.eegtoolkit.view.graph.GraphGLView;
 import eeg.useit.today.eegtoolkit.view.graph.GraphSurfaceView;
 import eeg.useit.today.eegtoolkit.vm.StreamingDeviceViewModel;
-import eeg.useit.today.eegtoolkit.vm.TimeSeries;
+import eeg.useit.today.eegtoolkit.model.TimeSeries;
 
 /**
  * Example activity that displays live details for a connected device.
@@ -58,7 +56,7 @@ public class DeviceDetailsActivity extends AppCompatActivity {
     binding.setBetaVM( deviceVM.createFrequencyLiveValue(Band.BETA,  ValueType.SCORE));
 
     // Attach the live data to the graph views.
-    TimeSeries rawSeries3 = deviceVM.createRawTimeSeries(Eeg.EEG3, DURATION_SEC);
+    TimeSeries<Double> rawSeries3 = deviceVM.createRawTimeSeries(Eeg.EEG3, DURATION_SEC);
     this.surfaceView = (GraphSurfaceView) findViewById(R.id.graphSurface);
     this.surfaceView.setTimeSeries(rawSeries3);
     this.glView = (GraphGLView) findViewById(R.id.graphGL);
@@ -91,21 +89,7 @@ public class DeviceDetailsActivity extends AppCompatActivity {
         }
       });
     }
-
-    // Make sure to refresh the graphs once the timeseries changes.
-    rawSeries3.addOnPropertyChangedCallback(new Observable.OnPropertyChangedCallback() {
-      @Override public void onPropertyChanged(Observable sender, int propertyId) {
-        updateGraphs();
-      }
-    });
   }
-
-  // Updates the graphs by invalidating them, causing redraw with the new data.
-  private void updateGraphs() {
-    surfaceView.postInvalidate();
-    glView.postInvalidate();
-  }
-
 
   @Override
   public boolean onCreateOptionsMenu(Menu menu) {
