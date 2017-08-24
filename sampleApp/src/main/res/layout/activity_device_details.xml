@@ -11,6 +11,7 @@
         <variable name="deviceVM" type="eeg.useit.today.eegtoolkit.vm.StreamingDeviceViewModel" />
         <variable name="isGoodVM" type="eeg.useit.today.eegtoolkit.vm.SensorGoodViewModel" />
         <variable name="connectionVM" type="eeg.useit.today.eegtoolkit.vm.ConnectionStrengthViewModel" />
+        <variable name="rawVM" type="eeg.useit.today.eegtoolkit.vm.RawChannelViewModel" />
 
         <variable name="thetaVM" type="eeg.useit.today.eegtoolkit.vm.FrequencyBandViewModel" />
         <variable name="deltaVM" type="eeg.useit.today.eegtoolkit.vm.FrequencyBandViewModel" />
@@ -98,6 +99,7 @@
 
         <eeg.useit.today.eegtoolkit.view.ConnectionStrengthView
             android:id="@+id/connectionStrength"
+            app:connectionStrength="@{connectionVM}"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_marginBottom="0dp"
@@ -121,6 +123,7 @@
 
         <eeg.useit.today.eegtoolkit.view.graph.GraphGLView
             android:id="@+id/graphGL"
+            app:timeSeries="@{rawVM}"
             android:layout_width="395dp"
             android:layout_height="120dp"
             app:layout_constraintLeft_toLeftOf="parent"
@@ -138,6 +141,7 @@
 
         <eeg.useit.today.eegtoolkit.view.graph.GraphSurfaceView
             android:id="@+id/graphSurface"
+            app:timeSeries="@{rawVM}"
             android:layout_width="395dp"
             android:layout_height="120dp"
             app:layout_constraintHorizontal_bias="0.0"

@@ -24,7 +24,7 @@ public class ConnectionStrengthView extends SurfaceView {
   }
 
   /** Connect the view to a viewmodel. */
-  public void setLiveStrength(ConnectionStrengthViewModel liveStrength) {
+  public void setConnectionStrength(ConnectionStrengthViewModel liveStrength) {
     assert this.liveStrength == null;
     this.liveStrength = liveStrength;
     this.liveStrength.addListener(new LiveSeries.Listener<Double[]>() {

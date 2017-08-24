@@ -62,11 +62,6 @@ public class StreamingDeviceViewModel extends BaseObservable {
     return this.muse == null ? null : this.muse.getMacAddress();
   }
 
-  /** @return A new live VM for each sensor's isGood status. */
-  public SensorGoodViewModel createSensorConnection() {
-    return new SensorGoodViewModel(this);
-  }
-
   /** @return A new live VM for a single time series from a raw data channel. */
   public RawChannelViewModel createRawTimeSeries(final Eeg channel, int durationSec) {
     return new RawChannelViewModel(this, channel, durationSec * 1000L);
