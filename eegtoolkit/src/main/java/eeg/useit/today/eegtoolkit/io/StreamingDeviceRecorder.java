@@ -96,7 +96,7 @@ public class StreamingDeviceRecorder {
       this.device.registerDataListenerWhenConnected(new MuseDataListener() {
         @Override
         public void receiveMuseDataPacket(MuseDataPacket packet, Muse muse) {
-          Log.i(Constants.TAG, "WRITING... " + StreamingDeviceRecorder.this.isRunning());
+          Log.i(Constants.TAG, "WRITING MDP... " + StreamingDeviceRecorder.this.isRunning());
           if (StreamingDeviceRecorder.this.isRunning()) {
             museFileWriter.addDataPacket(SINGLE_DEVICE, packet);
           }
@@ -104,6 +104,7 @@ public class StreamingDeviceRecorder {
 
         @Override
         public void receiveMuseArtifactPacket(MuseArtifactPacket packet, Muse muse) {
+          Log.i(Constants.TAG, "WRITING AP... " + StreamingDeviceRecorder.this.isRunning());
           if (StreamingDeviceRecorder.this.isRunning()) {
             museFileWriter.addArtifactPacket(SINGLE_DEVICE, packet);
           }

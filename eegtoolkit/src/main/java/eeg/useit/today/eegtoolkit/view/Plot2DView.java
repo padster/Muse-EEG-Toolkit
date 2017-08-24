@@ -41,7 +41,7 @@ public class Plot2DView extends SurfaceView {
     this.timeSeries = ts;
     this.timeSeries.addListener(new LiveSeries.Listener<Double[]>() {
       @Override public void valueAdded(long timestampMicro, Double[] data) {
-        Plot2DView.this.invalidate();
+        invalidate();
       }
     });
   }
@@ -76,7 +76,7 @@ public class Plot2DView extends SurfaceView {
   }
 
   // Convert age (0 = new, 1 = old) into a paint, using red-green scale.
-  private Paint paintForAge(double age) {
+  private static Paint paintForAge(double age) {
     Paint paint = new Paint();
     int r = (int)(255 * (1 - age));
     int g = (int)(255 * age);

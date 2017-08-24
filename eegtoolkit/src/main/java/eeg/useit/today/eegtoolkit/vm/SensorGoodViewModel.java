@@ -12,7 +12,8 @@ import eeg.useit.today.eegtoolkit.BR;
 import eeg.useit.today.eegtoolkit.common.BaseDataPacketListener;
 
 /**
- * Represents the most recent values of connection state for the four sensors.
+ * Represents the most recent values of the is_good state for the four sensors.
+ * See also {@link ConnectionStrengthViewModel} if intermediate connection is required.
  */
 public class SensorGoodViewModel extends BaseObservable {
   /** Most recent connection status. */
@@ -23,7 +24,7 @@ public class SensorGoodViewModel extends BaseObservable {
     deviceVM.registerDataListenerWhenConnected(new BaseDataPacketListener() {
       @Override
       public void receiveMuseDataPacket(MuseDataPacket museDataPacket, Muse muse) {
-        SensorGoodViewModel.this.updateConnectionState(
+        updateConnectionState(
             museDataPacket.getEegChannelValue(Eeg.EEG1) > 0,
             museDataPacket.getEegChannelValue(Eeg.EEG2) > 0,
             museDataPacket.getEegChannelValue(Eeg.EEG3) > 0,

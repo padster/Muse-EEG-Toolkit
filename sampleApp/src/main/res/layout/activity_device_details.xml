@@ -9,7 +9,8 @@
 
     <data>
         <variable name="deviceVM" type="eeg.useit.today.eegtoolkit.vm.StreamingDeviceViewModel" />
-        <variable name="connectionVM" type="eeg.useit.today.eegtoolkit.vm.SensorGoodViewModel" />
+        <variable name="isGoodVM" type="eeg.useit.today.eegtoolkit.vm.SensorGoodViewModel" />
+        <variable name="connectionVM" type="eeg.useit.today.eegtoolkit.vm.ConnectionStrengthViewModel" />
 
         <variable name="thetaVM" type="eeg.useit.today.eegtoolkit.vm.FrequencyBandViewModel" />
         <variable name="deltaVM" type="eeg.useit.today.eegtoolkit.vm.FrequencyBandViewModel" />
@@ -23,66 +24,99 @@
         tools:context="eeg.useit.today.eegtoolkit.sampleapp.DeviceDetailsActivity">
 
 
-        <CheckBox
-            android:id="@+id/connected0"
-            android:layout_width="139dp"
+        <TextView
+            android:id="@+id/isGoodText"
+            android:layout_width="0dp"
             android:layout_height="50dp"
             android:layout_marginLeft="8dp"
+            android:layout_marginRight="0dp"
             android:layout_marginTop="8dp"
-            android:checked='@{connectionVM.connected[0]}'
-            android:clickable="false"
-            android:text="Left Ear"
+            android:gravity="right|center_vertical"
+            android:text="Is Good:"
             app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="@+id/connectionText"
+            app:layout_constraintTop_toTopOf="parent"/>
+
+        <CheckBox
+            android:id="@+id/connected0"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:checked='@{isGoodVM.connected[0]}'
+            android:clickable="false"
             app:layout_constraintTop_toTopOf="parent"
-            android:layout_marginStart="8dp"/>
+            app:layout_constraintLeft_toRightOf="@+id/isGoodText"/>
 
         <CheckBox
             android:id="@+id/connected1"
-            android:layout_width="139dp"
+            android:layout_width="wrap_content"
             android:layout_height="50dp"
             android:layout_marginLeft="8dp"
-            android:layout_marginTop="8dp"
-            android:text="Left Forehead"
-            android:clickable="false"
-            android:checked='@{connectionVM.connected[1]}'
             android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:checked='@{isGoodVM.connected[1]}'
+            android:clickable="false"
             app:layout_constraintLeft_toRightOf="@+id/connected0"
             app:layout_constraintTop_toTopOf="parent"/>
 
         <CheckBox
             android:id="@+id/connected2"
-            android:layout_width="139dp"
+            android:layout_width="wrap_content"
             android:layout_height="50dp"
-            android:text="Right Forehead"
             android:layout_marginLeft="8dp"
+            android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
+            android:checked='@{isGoodVM.connected[2]}'
             android:clickable="false"
-            android:checked='@{connectionVM.connected[2]}'
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/connected1"
-            android:layout_marginStart="8dp"/>
+            app:layout_constraintLeft_toRightOf="@+id/connected1"
+            app:layout_constraintTop_toTopOf="parent"/>
 
         <CheckBox
             android:id="@+id/connected3"
-            android:layout_width="139dp"
+            android:layout_width="wrap_content"
             android:layout_height="50dp"
-            android:text="Right Ear"
+            android:layout_marginLeft="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:checked='@{isGoodVM.connected[3]}'
+            android:clickable="false"
+            app:layout_constraintLeft_toRightOf="@+id/connected2"
+            app:layout_constraintTop_toTopOf="parent"/>
+
+        <TextView
+            android:id="@+id/connectionText"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
             android:layout_marginLeft="8dp"
             android:layout_marginTop="8dp"
-            android:clickable="false"
-            android:checked='@{connectionVM.connected[3]}'
-            app:layout_constraintTop_toBottomOf="@+id/connected1"
-            android:layout_marginStart="8dp"
-            app:layout_constraintLeft_toRightOf="@+id/connected2"/>
+            android:gravity="right|center_vertical"
+            android:text="Connection:"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/isGoodText"/>
+
+        <eeg.useit.today.eegtoolkit.view.ConnectionStrengthView
+            android:id="@+id/connectionStrength"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginBottom="0dp"
+            android:layout_marginLeft="0dp"
+            android:layout_marginRight="0dp"
+            android:layout_marginTop="0dp"
+            app:layout_constraintBottom_toBottomOf="@+id/connectionText"
+            app:layout_constraintRight_toRightOf="@+id/connected3"
+            app:layout_constraintTop_toTopOf="@+id/connectionText"
+            app:layout_constraintLeft_toLeftOf="@+id/connected0"/>
 
         <TextView
             android:id="@+id/textView4"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="GraphGLView:"
-            app:layout_constraintTop_toBottomOf="@+id/connected2"
+            app:layout_constraintTop_toBottomOf="@+id/connectionText"
             android:layout_marginLeft="8dp"
-            app:layout_constraintLeft_toLeftOf="@+id/connected2"
+            app:layout_constraintLeft_toLeftOf="parent"
             android:layout_marginStart="8dp"/>
 
         <eeg.useit.today.eegtoolkit.view.graph.GraphGLView

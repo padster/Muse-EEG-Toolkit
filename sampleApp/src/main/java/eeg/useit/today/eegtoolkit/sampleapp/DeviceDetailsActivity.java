@@ -17,8 +17,10 @@ import com.choosemuse.libmuse.MuseManagerAndroid;
 import eeg.useit.today.eegtoolkit.common.FrequencyBands.Band;
 import eeg.useit.today.eegtoolkit.common.FrequencyBands.ValueType;
 import eeg.useit.today.eegtoolkit.sampleapp.databinding.ActivityDeviceDetailsBinding;
+import eeg.useit.today.eegtoolkit.view.ConnectionStrengthView;
 import eeg.useit.today.eegtoolkit.view.graph.GraphGLView;
 import eeg.useit.today.eegtoolkit.view.graph.GraphSurfaceView;
+import eeg.useit.today.eegtoolkit.vm.ConnectionStrengthViewModel;
 import eeg.useit.today.eegtoolkit.vm.StreamingDeviceViewModel;
 import eeg.useit.today.eegtoolkit.model.TimeSeries;
 
@@ -32,12 +34,6 @@ public class DeviceDetailsActivity extends AppCompatActivity {
   /** The live device VM backing this view. */
   private final StreamingDeviceViewModel deviceVM = new StreamingDeviceViewModel();
 
-  /** Holder for the scrolling graph based off a SurfaceView. */
-  private GraphSurfaceView surfaceView;
-
-  /** Holder for the scrolling graph based off a GLView. */
-  private GraphGLView glView;
-
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
@@ -49,18 +45,24 @@ public class DeviceDetailsActivity extends AppCompatActivity {
     ActivityDeviceDetailsBinding binding =
         DataBindingUtil.setContentView(this, R.layout.activity_device_details);
     binding.setDeviceVM(deviceVM);
-    binding.setConnectionVM(deviceVM.createSensorConnection());
+    binding.setIsGoodVM(deviceVM.createSensorConnection());
+
     binding.setThetaVM(deviceVM.createFrequencyLiveValue(Band.THETA, ValueType.SCORE));
     binding.setDeltaVM(deviceVM.createFrequencyLiveValue(Band.DELTA, ValueType.SCORE));
     binding.setAlphaVM(deviceVM.createFrequencyLiveValue(Band.ALPHA, ValueType.SCORE));
     binding.setBetaVM( deviceVM.createFrequencyLiveValue(Band.BETA,  ValueType.SCORE));
+    ConnectionStrengthViewModel connectionVM = new ConnectionStrengthViewModel(deviceVM);
+    binding.setConnectionVM(connectionVM);
 
     // Attach the live data to the graph views.
     TimeSeries<Double> rawSeries3 = deviceVM.createRawTimeSeries(Eeg.EEG3, DURATION_SEC);
-    this.surfaceView = (GraphSurfaceView) findViewById(R.id.graphSurface);
-    this.surfaceView.setTimeSeries(rawSeries3);
-    this.glView = (GraphGLView) findViewById(R.id.graphGL);
-    this.glView.setTimeSeries(rawSeries3);
+    ((GraphSurfaceView) findViewById(R.id.graphSurface))
+        .setTimeSeries(rawSeries3);
+    ((GraphGLView) findViewById(R.id.graphGL))
+        .setTimeSeries(rawSeries3);
+    ((ConnectionStrengthView) findViewById(R.id.connectionStrength))
+        .setLiveStrength(connectionVM);
+
 
     // Bind action bar, seems like this can't be done in the layout :(
     deviceVM.addOnPropertyChangedCallback(new Observable.OnPropertyChangedCallback() {
