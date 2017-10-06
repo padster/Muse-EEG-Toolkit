@@ -23,17 +23,6 @@ public class ConnectionStrengthView extends SurfaceView {
     setWillNotDraw(false);
   }
 
-  /** Connect the view to a viewmodel. */
-  public void setConnectionStrength(ConnectionStrengthViewModel liveStrength) {
-    assert this.liveStrength == null;
-    this.liveStrength = liveStrength;
-    this.liveStrength.addListener(new LiveSeries.Listener<Double[]>() {
-      @Override public void valueAdded(long timestampMicro, Double[] data) {
-        invalidate();
-      }
-    });
-  }
-
   @Override
   public void onDraw(Canvas canvas) {
     Paint background = new Paint();
@@ -54,6 +43,17 @@ public class ConnectionStrengthView extends SurfaceView {
       Paint paint = paintForStrength(liveStrength.getChannelStatus(i));
       canvas.drawCircle(atX, midY, rad * PADDING, paint);
     }
+  }
+
+  /** Connect the view to a viewmodel. */
+  public void setConnectionStrength(ConnectionStrengthViewModel liveStrength) {
+    assert this.liveStrength == null;
+    this.liveStrength = liveStrength;
+    this.liveStrength.addListener(new LiveSeries.Listener<Double[]>() {
+      @Override public void valueAdded(long timestampMicro, Double[] data) {
+        invalidate();
+      }
+    });
   }
 
   // Convert strength (0 = bad, 0.5 = ok, 1 = good) into a paint, using red-green scale.
