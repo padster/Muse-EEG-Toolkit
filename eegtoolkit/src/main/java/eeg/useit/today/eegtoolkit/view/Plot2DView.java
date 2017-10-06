@@ -15,24 +15,14 @@ import eeg.useit.today.eegtoolkit.model.TimeSeriesSnapshot;
  * View that draws a short history of dots on a 2d grid, showing two dimensions of values.
  */
 public class Plot2DView extends SurfaceView {
-  private final static int DEFAULT_DURATION_SEC = 4;
   private final static float DOT_RADIUS = 0.05f;
 
-  private final int durationSec;
   private TimeSeries<Double[]> timeSeries;
 
   /** Creates a Plot2D graph by parsing attributes. */
   public Plot2DView(Context context, AttributeSet attrs) {
     super(context, attrs);
     setWillNotDraw(false);
-
-    int durationSec = DEFAULT_DURATION_SEC;
-    for (int i = 0; i < attrs.getAttributeCount(); i++) {
-      if ("durationSec".equals(attrs.getAttributeName(i))) {
-        durationSec = attrs.getAttributeIntValue(i, DEFAULT_DURATION_SEC);
-      }
-    }
-    this.durationSec = durationSec;
   }
 
   /** Connect the view to a viewmodel. */

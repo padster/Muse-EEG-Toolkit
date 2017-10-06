@@ -49,6 +49,7 @@ public class MergedSeries implements LiveSeries<Double[]> {
       for (Listener<Double[]> listener : this.listeners) {
         listener.valueAdded(timestamp, valueCopy);
       }
+      // Clear all after fire, so we know when everything has arrived later.
       for (int i = 0; i < this.lastTimestamp.length; i++) {
         this.lastTimestamp[i] = NO_TIMESTAMP;
         this.lastValue[i] = 0.0;
