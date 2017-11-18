@@ -100,6 +100,7 @@
         <eeg.useit.today.eegtoolkit.view.ConnectionStrengthView
             android:id="@+id/connectionStrength"
             app:connectionStrength="@{connectionVM}"
+            custom:backgroundColor="#0000ff"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_marginBottom="0dp"
@@ -124,12 +125,13 @@
         <eeg.useit.today.eegtoolkit.view.graph.GraphGLView
             android:id="@+id/graphGL"
             app:timeSeries="@{rawVM}"
+            custom:durationSec="5"
             android:layout_width="395dp"
             android:layout_height="120dp"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView4"
-            custom:durationSec="5"/>
+            />
 
         <TextView
             android:id="@+id/textView5"
@@ -169,12 +171,12 @@
             android:layout_height="30dp"
             android:layout_marginLeft="8dp"
             android:layout_marginRight="8dp"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="4dp"
             android:max="100"
             app:layout_constraintLeft_toRightOf="@+id/deltaText"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/graphSurface"
-            tools:layout_editor_absoluteX="22dp"/>
+            app:layout_constraintHorizontal_bias="0.0"/>
 
         <TextView
             android:id="@+id/thetaText"

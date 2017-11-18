@@ -6,4 +6,7 @@
     <declare-styleable name="GraphSurfaceView">
         <attr name="lineColor" format="string" />
     </declare-styleable>
+    <declare-styleable name="ConnectionStrengthView">
+        <attr name="backgroundColor" format="string" />
+    </declare-styleable>
 </resources>

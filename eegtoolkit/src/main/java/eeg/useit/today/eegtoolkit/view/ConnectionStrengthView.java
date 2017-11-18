@@ -17,18 +17,28 @@ public class ConnectionStrengthView extends SurfaceView {
   /** ViewModel backing this view, set once. */
   private ConnectionStrengthViewModel liveStrength = null;
 
+  /** Background color for the view. */
+  private final Paint backgroundPaint = new Paint();
+
   /** Creates an HSI view by parsing attributes. */
   public ConnectionStrengthView(Context context, AttributeSet attrs) {
     super(context, attrs);
+
+    int backgroundColor = Color.BLACK;
+    for (int i = 0; i < attrs.getAttributeCount(); i++) {
+      if ("backgroundColor".equals(attrs.getAttributeName(i))) {
+        backgroundColor = Color.parseColor(attrs.getAttributeValue(i));
+      }
+    }
+    backgroundPaint.setColor(backgroundColor);
+    backgroundPaint.setStyle(Paint.Style.FILL_AND_STROKE);
+
     setWillNotDraw(false);
   }
 
   @Override
   public void onDraw(Canvas canvas) {
-    Paint background = new Paint();
-    background.setColor(Color.WHITE);
-    background.setStyle(Paint.Style.FILL_AND_STROKE);
-    canvas.drawPaint(background);
+    canvas.drawPaint(backgroundPaint);
 
     if (this.liveStrength == null) {
       // Nothing to draw yet...
