@@ -52,10 +52,10 @@ public class EpochSurfaceView extends SurfaceView {
         case "lineColor":
           color = Color.parseColor(attrs.getAttributeValue(i));
           break;
-        case "minValue:":
+        case "minValue":
           minValue = Double.parseDouble(attrs.getAttributeValue(i));
           break;
-        case "maxValue:":
+        case "maxValue":
           maxValue = Double.parseDouble(attrs.getAttributeValue(i));
           break;
         case "showAverage":
