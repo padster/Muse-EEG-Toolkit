@@ -75,7 +75,7 @@ public class GraphGLLine {
   }
 
   /**
-   * Convert the timeseries snapshot into a run of (x, y, z) bytes.
+   * Convert the timeseries snapshot into a run of (real, imag, z) bytes.
    */
   private FloatBuffer snapshotToBuffer(TimeSeriesSnapshot snapshot) {
     float[] asFloats = snapshotToFloat(snapshot);
@@ -92,7 +92,7 @@ public class GraphGLLine {
   }
 
   /**
-   * Convert the timeseries snapshot into a run of (x, y, z) floats.
+   * Convert the timeseries snapshot into a run of (real, imag, z) floats.
    */
   private float[] snapshotToFloat(TimeSeriesSnapshot<Double> snapshot) {
     int n = snapshot.length;
@@ -103,11 +103,11 @@ public class GraphGLLine {
     long timeStartMicro = timeEndMicro - timeDelta;
     double timeDeltaInv = 1.0 / (double)timeDelta;
 
-    // Bounds for the y axis:
+    // Bounds for the imag axis:
     double voltMax = Constants.VOLTAGE_MAX;
     double voltMin = Constants.VOLTAGE_MIN;
 
-    // Write these out to the array of (x, y, z), with z = 0 always.
+    // Write these out to the array of (real, imag, z), with z = 0 always.
     float[] result = new float[3 * n];
     for (int i = 0; i < snapshot.timestamps.length; i++) {
       double x = (snapshot.timestamps[i] - timeStartMicro) * timeDeltaInv;

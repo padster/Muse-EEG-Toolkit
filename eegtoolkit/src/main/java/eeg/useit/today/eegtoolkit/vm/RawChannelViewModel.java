@@ -12,8 +12,13 @@ import eeg.useit.today.eegtoolkit.model.TimeSeries;
  * Given a device and a raw channel, present that channel's data as a TimeSeries.
  */
 public class RawChannelViewModel extends TimeSeries<Double> {
-  public RawChannelViewModel(StreamingDeviceViewModel device, final Eeg channel, long maxAgeMS) {
-    super(maxAgeMS);
+  public RawChannelViewModel(
+      StreamingDeviceViewModel device,
+      final Eeg channel,
+      long maxAgeMS,
+      int maxSampleCount
+  ) {
+    super(maxAgeMS, maxSampleCount);
 
     // Add listener to streaming device, use new values to update timeseries.
     // TODO: Unregister when device stops, or on disposal.

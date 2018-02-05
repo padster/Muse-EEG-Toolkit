@@ -79,7 +79,7 @@ public class GraphSurfaceView extends SurfaceView {
     double voltMax = Constants.VOLTAGE_MAX;
     double voltMin = Constants.VOLTAGE_MIN;
 
-    // Build the path by normalizing (time, value) to (x, y) coordinates.
+    // Build the path by normalizing (time, value) to (real, imag) coordinates.
     Path path = new Path();
     for (int i = 0; i < snapshot.length; i++) {
       double x = (snapshot.timestamps[i] - timeStartMicro) * timeDeltaInv;

@@ -7,9 +7,11 @@ import android.util.Log;
 import com.choosemuse.libmuse.ConnectionState;
 import com.choosemuse.libmuse.Eeg;
 import com.choosemuse.libmuse.Muse;
+import com.choosemuse.libmuse.MuseArtifactPacket;
 import com.choosemuse.libmuse.MuseConnectionListener;
 import com.choosemuse.libmuse.MuseConnectionPacket;
 import com.choosemuse.libmuse.MuseDataListener;
+import com.choosemuse.libmuse.MuseDataPacket;
 import com.choosemuse.libmuse.MuseDataPacketType;
 
 import java.util.ArrayList;
@@ -40,7 +42,6 @@ public class StreamingDeviceViewModel extends BaseObservable {
     assert this.connectionState == ConnectionState.DISCONNECTED;
     this.muse = muse;
     this.connectionState = this.muse.getConnectionState();
-    Log.i(Constants.TAG, "SETTING MUSE WITH STATE " + connectionState);
     if (!this.connectionCallbacks.isEmpty()) {
       this.connectToMuse();
     }
@@ -64,12 +65,18 @@ public class StreamingDeviceViewModel extends BaseObservable {
 
   /** @return A new live VM for a single time series from a raw data channel. */
   public RawChannelViewModel createRawTimeSeries(final Eeg channel, int durationSec) {
-    return new RawChannelViewModel(this, channel, durationSec * 1000L);
+    int samples = (int)(durationSec * 220.0); // Muse sample rate.
+    return new RawChannelViewModel(this, channel, -1, samples);
   }
 
   /** @return A new live VM for each sensor's frequency value for a given band/type combo. */
   public FrequencyBandViewModel createFrequencyLiveValue(Band band, ValueType type) {
     return new FrequencyBandViewModel(this, band, type);
+  }
+
+  /** @return A new live VM for the frequency band powers. */
+  public PSDViewModel createPSDLiveValue() {
+    return new PSDViewModel(this);
   }
 
   /**

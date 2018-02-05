@@ -9,6 +9,13 @@ import java.util.List;
 
 /** Time Series stored as a circular buffer. Values too old are removed. */
 public class TimeSeries<T> extends BaseObservable implements LiveSeries<T> {
+  public static <T> TimeSeries<T> fromMaxAgeMS(int maxAgeMS) {
+    return new TimeSeries<T>(maxAgeMS, -1);
+  }
+  public static <T> TimeSeries<T> fromMaxLength(int maxSampleCount) {
+    return new TimeSeries<T>(-1, maxSampleCount);
+  }
+
   /** Values within the timeseries. */
   private final CircularArray<T> values = new CircularArray<>();
 
@@ -18,12 +25,22 @@ public class TimeSeries<T> extends BaseObservable implements LiveSeries<T> {
   /** Values older than this will be removed. */
   private final long maxAgeMicro;
 
+  /** Only store this many values. */
+  private final int maxSampleCount;
+
   /** Things interested on when this series changes. */
   private final List<Listener<T>> listeners = new ArrayList<>();
 
   /** Create a timeseries, giving it a maximum age (in ms) length to contain. */
   public TimeSeries(long maxAgeMS) {
-    this.maxAgeMicro = maxAgeMS * 1000L;
+    this(maxAgeMS, -1);
+  }
+
+  /** Create a timeseries, giving either maximum age (in ms) or maximum sample count. */
+  public TimeSeries(long maxAgeMS, int maxSampleCount) {
+    this.maxAgeMicro = maxAgeMS == -1 ? -1 : maxAgeMS * 1000L;
+    this.maxSampleCount = maxSampleCount;
+    assert this.maxAgeMicro == -1 ^ this.maxSampleCount == -1;
   }
 
   /** @return Whether the time series has any data. */
@@ -54,9 +71,16 @@ public class TimeSeries<T> extends BaseObservable implements LiveSeries<T> {
 
       // First, remove all the old values.
       long finalSnapshot = timestampsMicro.getLast();
-      while (timestampsMicro.getFirst() + maxAgeMicro < finalSnapshot) {
-        timestampsMicro.popFirst();
-        values.popFirst();
+      if (maxSampleCount == -1) {
+        while (timestampsMicro.getFirst() + maxAgeMicro < finalSnapshot) {
+          timestampsMicro.popFirst();
+          values.popFirst();
+        }
+      } else {
+        while (timestampsMicro.size() > maxSampleCount) {
+          timestampsMicro.popFirst();
+          values.popFirst();
+        }
       }
 
       // Next, snapshot into arrays and return:

@@ -48,6 +48,7 @@ public class MoreDeviceDetailsActivity extends AppCompatActivity {
         DataBindingUtil.setContentView(this, R.layout.activity_more_device_details);
     binding.setDeviceVM(deviceVM);
     binding.setEpochs(epochCollector);
+    binding.setPsdVM(deviceVM.createPSDLiveValue());
 
     // Bind action bar, seems like this can't be done in the layout :(
     deviceVM.addOnPropertyChangedCallback(new Observable.OnPropertyChangedCallback() {

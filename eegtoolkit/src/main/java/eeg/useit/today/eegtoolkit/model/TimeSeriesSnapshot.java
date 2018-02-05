@@ -1,9 +1,13 @@
 package eeg.useit.today.eegtoolkit.model;
 
+import java.io.Serializable;
+
 /** Immutable snapshot of timeseries data. */
-public class TimeSeriesSnapshot<T> {
+public class TimeSeriesSnapshot<T> implements Serializable {
+  private static final long serialVersionUID = 1228347767823776957L;
+
   public static final TimeSeriesSnapshot EMPTY =
-      new TimeSeriesSnapshot<Object>(new long[]{}, new Object[]{});
+      new TimeSeriesSnapshot<>(new long[]{}, new Object[]{});
 
   /** Values in the timeseries. */
   public final T[] values;

@@ -9,4 +9,9 @@
     <declare-styleable name="ConnectionStrengthView">
         <attr name="backgroundColor" format="string" />
     </declare-styleable>
+    <declare-styleable name="EpochSurfaceView">
+        <attr name="minValue" format="float" />
+        <attr name="maxValue" format="float" />
+        <attr name="showAverage" format="boolean" />
+    </declare-styleable>
 </resources>

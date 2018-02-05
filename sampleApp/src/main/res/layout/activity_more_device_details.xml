@@ -8,6 +8,7 @@
 
     <data>
         <variable name="deviceVM" type="eeg.useit.today.eegtoolkit.vm.StreamingDeviceViewModel" />
+        <variable name="psdVM" type="eeg.useit.today.eegtoolkit.vm.PSDViewModel" />
         <variable name="epochs" type="eeg.useit.today.eegtoolkit.model.EpochCollector" />
     </data>
 
@@ -31,7 +32,7 @@
         <eeg.useit.today.eegtoolkit.view.Plot2DView
             android:id="@+id/tbr2DPlot"
             android:layout_width="200dp"
-            android:layout_height="200dp"
+            android:layout_height="100dp"
             android:layout_marginLeft="8dp"
             android:layout_marginRight="8dp"
             android:layout_marginTop="8dp"
@@ -45,17 +46,31 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="6dp"
             android:layout_marginTop="8dp"
-            android:text="Epochs:"
+            android:text="PSD:"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tbr2DPlot"/>
+
+        <eeg.useit.today.eegtoolkit.view.PSDSurfaceView
+            android:id="@+id/psdView"
+            app:PSDLiveSeries="@{psdVM}"
+            android:layout_width="300dp"
+            android:layout_height="100dp"
+            android:layout_marginTop="8dp"
+            app:layout_constraintTop_toBottomOf="@+id/textView7"
+            android:layout_marginRight="8dp"
+            app:layout_constraintRight_toRightOf="parent"
+            android:layout_marginLeft="8dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"/>
 
         <eeg.useit.today.eegtoolkit.view.EpochSurfaceView
             android:id="@+id/epochView"
             app:epochCollector="@{epochs}"
+            app:showAverage="true"
             android:layout_width="300dp"
-            android:layout_height="160dp"
+            android:layout_height="100dp"
             android:layout_marginTop="8dp"
-            app:layout_constraintTop_toBottomOf="@+id/textView7"
+            app:layout_constraintTop_toBottomOf="@+id/psdView"
             android:layout_marginRight="8dp"
             app:layout_constraintRight_toRightOf="parent"
             android:layout_marginLeft="8dp"
