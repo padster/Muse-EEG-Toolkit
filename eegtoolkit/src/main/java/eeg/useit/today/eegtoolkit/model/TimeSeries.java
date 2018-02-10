@@ -9,7 +9,7 @@ import java.util.List;
 
 /** Time Series stored as a circular buffer. Values too old are removed. */
 public class TimeSeries<T> extends BaseObservable implements LiveSeries<T> {
-  public static <T> TimeSeries<T> fromMaxAgeMS(int maxAgeMS) {
+  public static <T> TimeSeries<T> fromMaxAgeMS(long maxAgeMS) {
     return new TimeSeries<T>(maxAgeMS, -1);
   }
   public static <T> TimeSeries<T> fromMaxLength(int maxSampleCount) {
@@ -99,7 +99,20 @@ public class TimeSeries<T> extends BaseObservable implements LiveSeries<T> {
    * Given a live series, and duration, convert into a TimeSeries with history.
    */
   public static <V> TimeSeries<V> fromLiveSeries(LiveSeries<V> liveSeries, long maxAgeMS) {
-    final TimeSeries<V> result = new TimeSeries<>(maxAgeMS);
+    final TimeSeries<V> result = TimeSeries.fromMaxAgeMS(maxAgeMS);
+    liveSeries.addListener(new LiveSeries.Listener<V>() {
+      @Override public void valueAdded(long timestampMicro, V data) {
+        result.pushValue(timestampMicro, data);
+      }
+    });
+    return result;
+  }
+
+  /**
+   * Given a live series, and a smaple count, convert into a TimeSeries with history.
+   */
+  public static <V> TimeSeries<V> fromLiveSeriesWithCount(LiveSeries<V> liveSeries, int maxLength) {
+    final TimeSeries<V> result = TimeSeries.fromMaxLength(maxLength);
     liveSeries.addListener(new LiveSeries.Listener<V>() {
       @Override public void valueAdded(long timestampMicro, V data) {
         result.pushValue(timestampMicro, data);
